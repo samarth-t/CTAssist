@@ -19,16 +19,14 @@ from urllib.request import urlopen
 from xml.etree.ElementTree import parse
 import requests
 
-response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&location=41.9773,-87.8369&rankby=distance&type=subway_station')
+nearest_location=[];
+response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&location=41.8858,-87.6316&rankby=distance&type=subway_station')
 
 json_data = response.json() if response and response.status_code == 200 else None
-print (json_data)py
+for i in json_data["results"]:
+    nearest_location.append(i["name"])
 
-# if json_data and 'hoststatuslist' in json_data:
-#     if 'hoststatus' in json_data['hoststatuslist']:
-#         for hoststatus in json_data['hoststatuslist']['hoststatus']:
-#             host_name = hoststatus.get('name')
-#             status_text = hoststatus.get('status_text')
+print (nearest_location)
 
 
 var_url = urlopen('https://www.transitchicago.com/rss/escalator_elevator_alertrss.aspx')
@@ -40,4 +38,5 @@ for item in xmldoc.iterfind('channel/item'):
     if("Elevator" in title ):
         unaccesible_station.append(title.split(' ')[2])
 
-#print(unaccesible_station)
+nearest_location= set(nearest_location) - set(unaccesible_station)
+
