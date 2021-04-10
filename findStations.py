@@ -13,3 +13,18 @@ purple = ["Linden", "Davis", "Howard", "Wilson", "Belmont", "Wellington", "Diver
 red = ["Howard", "Loyola", "Granville", "Wilson", "Addison", "Belmont", "Fullerton", "Clark/Division", "Chicago", "Grand", "Lake", "Jackson", "Roosevelt", "Cermak-Chinatown", "Sox-35th", "47th", "Garfield", "63rd", "69th", "79th", "87th", "95th/Dan Ryan"]
 
 lines = {'brown' : brown, 'blue' : blue, 'green' : green, 'orange' : orange, 'pink' : pink, 'purple' : purple, 'red' : red}
+
+
+from urllib.request import urlopen
+from xml.etree.ElementTree import parse
+
+var_url = urlopen('https://www.transitchicago.com/rss/escalator_elevator_alertrss.aspx')
+xmldoc = parse(var_url)
+
+unaccesible_station =[];
+for item in xmldoc.iterfind('channel/item'):
+    title = item.findtext('title')
+    if("Elevator" in title ):
+        unaccesible_station.append(title.split(' ')[2])
+
+print(unaccesible_station)
