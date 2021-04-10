@@ -29,8 +29,9 @@ function initMap() {
         types: ["establishment"]
     });
 
+    var controlDiv = document.getElementById('searchTextField');
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
 };
-
 function autoComplete(){
     autocomplete = new google.maps.places.Autocomplete(document.getElementById("searchTextField"),{
         bounds: defaultBounds,
