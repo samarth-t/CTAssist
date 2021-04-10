@@ -14,29 +14,33 @@ red = ["Howard", "Loyola", "Granville", "Wilson", "Addison", "Belmont", "Fullert
 
 lines = {'brown' : brown, 'blue' : blue, 'green' : green, 'orange' : orange, 'pink' : pink, 'purple' : purple, 'red' : red}
 
-
 from urllib.request import urlopen
 from xml.etree.ElementTree import parse
 import requests
 
-nearest_location=[];
-response = requests.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&location=41.8858,-87.6316&rankby=distance&type=subway_station')
+def findNearest(lat,long):
+    nearest_location=[];
+    url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&location={},{}&rankby=distance&type=subway_station'.format(lat, long)
+    response = requests.get(url)
 
-json_data = response.json() if response and response.status_code == 200 else None
-for i in json_data["results"]:
-    nearest_location.append(i["name"])
+    json_data = response.json() if response and response.status_code == 200 else None
+    for i in json_data["results"]:
+        nearest_location.append(i["name"])
 
-print (nearest_location)
+    var_url = urlopen('https://www.transitchicago.com/rss/escalator_elevator_alertrss.aspx')
+    xmldoc = parse(var_url)
 
+    unaccesible_station =[]
+    for item in xmldoc.iterfind('channel/item'):
+        title = item.findtext('title')
+        if("Elevator" in title ):
+            unaccesible_station.append(title.split(' ')[2])
 
-var_url = urlopen('https://www.transitchicago.com/rss/escalator_elevator_alertrss.aspx')
-xmldoc = parse(var_url)
+    nearest_location= set(nearest_location) - set(unaccesible_station)
 
-unaccesible_station =[]
-for item in xmldoc.iterfind('channel/item'):
-    title = item.findtext('title')
-    if("Elevator" in title ):
-        unaccesible_station.append(title.split(' ')[2])
+    return nearest_location
 
-nearest_location= set(nearest_location) - set(unaccesible_station)
-
+# testing code
+lat = 41.8858
+long = -87.6316
+print(findNearest(lat,long))
