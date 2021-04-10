@@ -21,7 +21,7 @@ from xml.etree.ElementTree import parse
 var_url = urlopen('https://www.transitchicago.com/rss/escalator_elevator_alertrss.aspx')
 xmldoc = parse(var_url)
 
-unaccesible_station =[];
+unaccesible_station =[]
 for item in xmldoc.iterfind('channel/item'):
     title = item.findtext('title')
     if("Elevator" in title ):
