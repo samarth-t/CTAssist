@@ -1,15 +1,9 @@
 brown  = ["Kimball", "Kedzie", "Francisco", "Rockwell", "Western", "Damen", "Montrose", "Irving Park", "Addison", "Paulina", "Southport", "Belmont", "Wellington", "Diversey", "Fullerton", "Armitage", "Sedgwick", "Chicago", "Merchandise Mart", "Washington/Wells", "Quincy", "Harold Washington Library-State/Van Buren", "Washington/Wabash", "Clark/Lake"]
-
 blue = ["O’Hare", "Rosemont", "Cumberland", "Harlem (O'Hare branch)", "Jefferson Park", "Addison", "Logan Square", "Western (O’Hare branch)", "Clark/Lake", "Jackson", "UIC-Halsted", "Illinois Medical District", "Kedzie-Homan", "Forest Park"]
-
 green = ["Ashland/63rd", "Halsted", "Cottage Grove", "King Drive", "Garfield", "51st", "47th", "43rd", "Indiana", "35th-Bronzeville-IIT", "Cermak-McCormick Place", "Roosevelt", "Washington/Wabash", "Clark/Lake", "Clinton", "Morgan", "Ashland", "California", "Kedzie", "Conservatory-Central Park Drive", "Pulaski", "Cicero", "Laramie", "Central", "Harlem/Lake (via Marion entrance)"]
-
 orange = ["Midway", "Pulaski", "Kedzie", "Western", "35/Archer", "Ashland", "Halsted", "Roosevelt; also Harold Washington Library-State/Van Buren", "Quincy", "Washington/Wells", "Clark/Lake", "Washington/Wabash"]
-
 pink = ["54th/Cermak", "Cicero", "Kostner", "Pulaski", "Central Park", "Kedzie", "California", "Western", "Damen", "18th", "Polk", "Ashland", "Morgan", "Clinton", "Clark/Lake", "Washington/Wabash", "Harold Washington Library-State/Van Buren", "Quincy", "Washington/Wells"]
-
 purple = ["Linden", "Davis", "Howard", "Wilson", "Belmont", "Wellington", "Diversey", "Fullerton", "Armitage", "Sedgwick", "Chicago", "Merchandise Mart", "Clark/Lake", "Washington/Wabash", "Harold Washington Library-State/Van Buren", "Quincy", "Washington/Wells"]
-
 red = ["Howard", "Loyola", "Granville", "Wilson", "Addison", "Belmont", "Fullerton", "Clark/Division", "Chicago", "Grand", "Lake", "Jackson", "Roosevelt", "Cermak-Chinatown", "Sox-35th", "47th", "Garfield", "63rd", "69th", "79th", "87th", "95th/Dan Ryan"]
 
 lines = {'brown' : brown, 'blue' : blue, 'green' : green, 'orange' : orange, 'pink' : pink, 'purple' : purple, 'red' : red}
@@ -56,11 +50,27 @@ def findLine(loc):
 
 # Returns tuples of potential start and end locations
 def generatePaths(start_locs, end_locs):
-    return
+    paths = []
+    path_count = 0
+    for start_loc in start_locs:
+        for end_loc in end_locs:
+            common_lines = set(findLine(start_loc)) & set(findLine(end_loc))
+            if len(common_lines) != 0 and start_loc != end_loc:
+                paths.append((start_loc, end_loc))
+                path_count = path_count + 1
+                if path_count == 3:
+                    return paths
+    return paths
 
 # testing code
-lat = 41.8858
-long = -87.6316
-print(findNearest(lat,long))
-nearest = findNearest(lat,long)
-print(findLine(nearest[3]))
+start_lat = 41.8858
+start_long = -87.6316
+start_nearest = findNearest(start_lat,start_long)
+print(start_nearest)
+
+dest_lat = 41.8696
+dest_long = -87.6496
+dest_nearest = findNearest(dest_lat,dest_long)
+print(dest_nearest)
+
+print(generatePaths(start_nearest, dest_nearest))
