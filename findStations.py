@@ -18,14 +18,15 @@ from urllib.request import urlopen
 from xml.etree.ElementTree import parse
 import requests
 
+# Returns a list of nearest stations from the Google API
 def findNearest(lat,long):
-    nearest_location=[]
+    nearest_locations=[]
     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&location={},{}&rankby=distance&type=subway_station'.format(lat, long)
     response = requests.get(url)
 
     json_data = response.json() if response and response.status_code == 200 else None
     for i in json_data["results"]:
-        nearest_location.append(i["name"])
+        nearest_locations.append(i["name"])
 
     var_url = urlopen('https://www.transitchicago.com/rss/escalator_elevator_alertrss.aspx')
     xmldoc = parse(var_url)
@@ -36,21 +37,30 @@ def findNearest(lat,long):
         if("Elevator" in title ):
             unaccesible_station.append(title.split(' ')[2])
 
-    nearest_location= set(nearest_location) - set(unaccesible_station)
+    nearest_location = [elem for elem in nearest_locations]
+    for loc in nearest_locations:
+        if loc in unaccesible_station:
+            nearest_location.remove(loc)
+
+    #nearest_location = set(nearest_location) - set(unaccesible_station)
 
     return nearest_location
 
-def findLine(nearest_location):
-    for loc in nearest_location:
-        for l in lines.keys():
-            if loc in lines[l]:
-                my_line = loc
-    return my_line            
+# Finds the lines for any given station
+def findLine(loc):
+    loc_lines = []
+    for key in lines.keys():
+        if loc in lines[key]:
+            loc_lines.append(key)
+    return loc_lines    
 
+# Returns tuples of potential start and end locations
+def generatePaths(start_locs, end_locs):
+    return
 
 # testing code
 lat = 41.8858
 long = -87.6316
 print(findNearest(lat,long))
 nearest = findNearest(lat,long)
-print(findLine(nearest))
+print(findLine(nearest[3]))
