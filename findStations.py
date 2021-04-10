@@ -19,7 +19,7 @@ from xml.etree.ElementTree import parse
 import requests
 
 def findNearest(lat,long):
-    nearest_location=[];
+    nearest_location=[]
     url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&location={},{}&rankby=distance&type=subway_station'.format(lat, long)
     response = requests.get(url)
 
@@ -44,3 +44,13 @@ def findNearest(lat,long):
 lat = 41.8858
 long = -87.6316
 print(findNearest(lat,long))
+
+def findLine(nearest_location):
+    for loc in nearest_location:
+        for l in lines.keys():
+            if loc in lines[l]:
+                my_line = loc
+    return my_line            
+
+
+print(findLine(nearest_location))
