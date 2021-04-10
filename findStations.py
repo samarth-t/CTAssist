@@ -40,11 +40,6 @@ def findNearest(lat,long):
 
     return nearest_location
 
-# testing code
-lat = 41.8858
-long = -87.6316
-print(findNearest(lat,long))
-
 def findLine(nearest_location):
     for loc in nearest_location:
         for l in lines.keys():
@@ -53,4 +48,9 @@ def findLine(nearest_location):
     return my_line            
 
 
-print(findLine(nearest_location))
+# testing code
+lat = 41.8858
+long = -87.6316
+print(findNearest(lat,long))
+nearest = findNearest(lat,long)
+print(findLine(nearest))
