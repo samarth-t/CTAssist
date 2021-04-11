@@ -1,3 +1,16 @@
+var app = angular.module("myApp",[])
+app.controller("reportController",function ($scope) {
+    $scope.selectedStation ="";
+    //$scope.stations= ["Kimball", "Kedzie", "Francisco", "Rockwell", "Western", "Damen", "Montrose", "Irving Park", "Addison", "Paulina", "Southport", "Belmont", "Wellington", "Diversey", "Fullerton", "Armitage", "Sedgwick", "Chicago", "Merchandise Mart", "Washington/Wells", "Quincy", "Harold Washington Library-State/Van Buren", "Washington/Wabash", "Clark/Lake","O’Hare", "Rosemont", "Cumberland", "Harlem (O'Hare branch)", "Jefferson Park", "Addison", "Logan Square", "Western (O’Hare branch)", "Clark/Lake", "Jackson", "UIC-Halsted", "Illinois Medical District", "Kedzie-Homan", "Forest Park","Ashland/63rd", "Halsted", "Cottage Grove", "King Drive", "Garfield", "51st", "47th", "43rd", "Indiana", "35th-Bronzeville-IIT", "Cermak-McCormick Place", "Roosevelt", "Washington/Wabash", "Clark/Lake", "Clinton", "Morgan", "Ashland", "California", "Kedzie", "Conservatory-Central Park Drive", "Pulaski", "Cicero", "Laramie", "Central", "Harlem/Lake (via Marion entrance)","Midway", "Pulaski", "Kedzie", "Western", "35/Archer"]
+    //$scope.stations=[“Austin”, “Harlem/Lake”, “Pulaski”, “Quincy”, “Davis”, “Belmont”, “Jackson”, “Sheridan”, “Damen”, “Morse”, “35th/Archer”, “51st”, “Dempster-Skokie”, “Pulaski”, “LaSalle/Van Buren”, “Ashland”, “Oak Park”, “Sox-35th”, “Damen”, “Western (Forest Park Branch)”, “Cumberland”, “79th”, “Kedzie-Homan”, “State/Lake (Loop 'L')”, “Main”, “Central”, “Ashland/63rd”, “Indiana”, “Western”, “Division”, “Grand”, “Berwyn”, “UIC-Halsted”, “Southport”, “Washington”, “Clark/Lake”, “Forest Park”, “Noyes”, “Cicero”, “Clinton”, “California”, “95th/Dan Ryan”, “Merchandise Mart”, “Racine”, “Cicero”, “Grand”, “Garfield”, “Foster”, “Diversey”, “Wilson”, “Irving Park”, “Jackson”, “California”, “54th/Cermak”, “Damen”, “Kostner”, “Ridgeland”, “Clark/Division”, “North/Clybourn”, “Armitage”, “Western (O'Hare Branch)”, “Adams/Wabash”, “Dempster”, “Laramie”, “Chicago”, “Cottage Grove”, “Washington/Wells”, “Western”, “Harlem”, “Granville”, “Lawrence”, “Central Park”, “Monroe”, “Sedgwick”, “Illinois Medical District”, “Rosemont”, “18th”, “South Boulevard”, “Harold Washington Library-State/Van Buren”, “Francisco”, “Thorndale”, “O'Hare”, “Howard”, “63rd”, “Pulaski”, “Midway”, “Halsted”, “Pulaski”, “Cicero”, “Harlem (Forest Park Branch)”, “69th”, “Cermak-Chinatown”, “Rockwell”, “Logan Square”, “Polk”, “Kedzie”, “Linden”, “Ashland”, “Kedzie”, “47th”, “Monroe”, “35th-Bronzeville-IIT”, “Halsted”, “King Drive”, “Kedzie”, “Clinton”, “Garfield”, “Kedzie”, “Jarvis”, “Argyle”, “Wellington”, “Fullerton”, “47th”, “Addison”, “Central”, “Austin”, “43rd”, “Jefferson Park Transit Center”, “Kimball”, “Loyola”, “Paulina”, “Belmont”, “Montrose”, “LaSalle”, “Oak Park”, “California”, “Bryn Mawr”, “Roosevelt”, “Chicago”, “Addison”, “87th”, “Addison”, “Chicago”, “Irving Park”, “Western”, “Harrison”, “Montrose”, “Morgan”, “Lake”, “Conservatory-Central Park Drive”, “Oakton-Skokie”, “Cermak-McCormick Place”, “Washington/Wabash"];
+    temp = ["Austin", "Harlem/Lake", "Pulaski", "Quincy", "Davis", "Belmont", "Jackson", "Sheridan", "Damen", "Morse", "35th/Archer", "51st", "Dempster-Skokie", "Pulaski", "LaSalle/Van Buren", "Ashland", "Oak Park", "Sox-35th", "Damen", "Western (Forest Park Branch)", "Cumberland", "79th", "Kedzie-Homan", "State/Lake (Loop L)", "Main", "Central", "Ashland/63rd", "Indiana", "Western", "Division", "Grand", "Berwyn", "UIC-Halsted", "Southport", "Washington", "Clark/Lake", "Forest Park", "Noyes", "Cicero", "Clinton", "California", "95th/Dan Ryan", "Merchandise Mart", "Racine", "Cicero", "Grand", "Garfield", "Foster", "Diversey", "Wilson", "Irving Park", "Jackson", "California", "54th/Cermak", "Damen", "Kostner", "Ridgeland", "Clark/Division", "North/Clybourn", "Armitage", "Western (OHare Branch)", "Adams/Wabash", "Dempster", "Laramie", "Chicago", "Cottage Grove", "Washington/Wells", "Western", "Harlem", "Granville", "Lawrence", "Central Park", "Monroe", "Sedgwick", "Illinois Medical District", "Rosemont", "18th", "South Boulevard", "Harold Washington Library-State/Van Buren", "Francisco", "Thorndale", "OHare", "Howard", "63rd", "Pulaski", "Midway", "Halsted", "Pulaski", "Cicero", "Harlem (Forest Park Branch)", "69th", "Cermak-Chinatown", "Rockwell", "Logan Square", "Polk", "Kedzie", "Linden", "Ashland", "Kedzie", "47th", "Monroe", "35th-Bronzeville-IIT", "Halsted", "King Drive", "Kedzie", "Clinton", "Garfield", "Kedzie", "Jarvis", "Argyle", "Wellington", "Fullerton", "47th", "Addison", "Central", "Austin", "43rd", "Jefferson Park Transit Center", "Kimball", "Loyola", "Paulina", "Belmont", "Montrose", "LaSalle", "Oak Park", "California", "Bryn Mawr", "Roosevelt", "Chicago", "Addison", "87th", "Addison", "Chicago", "Irving Park", "Western", "Harrison", "Montrose", "Morgan", "Lake", "Conservatory-Central Park Drive", "Oakton-Skokie", "Cermak-McCormick Place", "Washington/Wabash"];
+    $scope.stations = temp.filter(function(item, pos) {
+        return temp.indexOf(item) == pos;
+    })
+    console.log($scope.stations)
+});
+
+
 let map;
 let current_latitude;
 let current_longitude;
@@ -19,7 +32,7 @@ function initMap() {
     getLocation();
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 41.8781, lng: -87.6298},
-        zoom: 12,
+        zoom: 15,
     });
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer({
@@ -161,3 +174,4 @@ function restApiCall(){
     return result_json = JSON.parse(httpGet("https://thingproxy.freeboard.io/fetch/http://3.130.138.187:8080/CTAssist?currentLocationLat="+current_latitude+"&currentLocationLong="+current_longitude+"&destinationLocationLat="+end_latitude+"&destinationLocationLong="+end_longitude));
 
 }
+
