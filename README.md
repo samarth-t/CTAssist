@@ -1,8 +1,8 @@
 # CTAssist
 
-![CTAssist Logo](https://i.ibb.co/Xj8Ht0R/logo2.png)
-
 ## Wheelchair-accessible navigation just got smarter! With real-time elevator closures, live user inputs, and station accessibility infrastructure accounted for, enjoy your hassle-free journey on CTA.
+
+![CTAssist Logo](https://i.ibb.co/Xj8Ht0R/logo2.png)
 
 ### Inspiration
 We wanted to ensure that as we start rekindling our connections, we keep all people in mind. So we decided to tackle the issue of accessibility, specifically in Chicago. As the situation improves, more and more people are bound to visit Chicago. Unfortunately, most common navigation tools like Google or Apple maps do not account for accessibility when recommending routes around the city. We decided to leverage easily accessible tools from the CTA to take a small step towards making city travel more accessible.
