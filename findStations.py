@@ -12,6 +12,7 @@ from urllib.request import urlopen
 from xml.etree.ElementTree import parse
 import requests
 import csv
+import json
 
 # Returns a list of nearest stations from the Google API
 def findNearest(lat,long):
@@ -37,8 +38,6 @@ def findNearest(lat,long):
         if loc in unaccesible_station:
             nearest_location.remove(loc)
 
-    #nearest_location = set(nearest_location) - set(unaccesible_station)
-
     return nearest_location
 
 # Finds the lines for any given station
@@ -63,12 +62,13 @@ def generatePaths(start_locs, end_locs):
                     return paths
     return paths
 
+# Converts a station name to its coordinates from CTA database
 def returnCoords(station_name):
     file = open("transit_info/stops.csv")
     reader = csv.reader(file)
     for row in reader:
         if(row[2] == station_name):
-            return (row[4],row[5])
+            return (float(row[4]),float(row[5]))
 
     return (91,181)
 
@@ -86,4 +86,8 @@ print(dest_nearest)
 paths = generatePaths(start_nearest, dest_nearest)
 print(paths)
 
-print(returnCoords(paths[0][0]))
+start_coords = returnCoords(paths[0][0])
+end_coords = returnCoords(paths[0][1])
+output = {'start':start_coords, 'end':end_coords}
+json_str = json.dumps(output)
+print(json_str)
