@@ -29,3 +29,11 @@ body {
     bottom: 50px;
     z-index: 99999;
 }
+
+.btn {
+    margin-top: 10px;
+}
+
+.label {
+    margin-top: 10px;
+}

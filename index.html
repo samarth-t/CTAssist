@@ -11,64 +11,60 @@
     <customHeaders>
         <add name="Access-Control-Allow-Origin" value="*" />
     </customHeaders>
-</httpProtocol>
+</httpProtocol> 
 <body ng-app="myApp">
+
 <div id="map"></div>
 
-<div class="card" style="width: 18rem;" id="info-card" >
-
-
-
-    <img class="card-img-top" src="Logo.png" alt="Card image cap">
+<div class="card text-white bg-dark mb-3 float-left"  style="width: 18rem; margin: 0.5cm;" id="info-card" >
+    <img class="card-img-top" src="CTAssist logo.png" alt="Card image cap">
+    <h2 style="color:slateblue; text-align: center;">CTAssist</h2>
     <div class="card-body">
         <div class="form-group">
-        <h5 class="card-text">Start</h5>
+        <h5 class="card-text label">Start</h5>
         <input class="form-control" id="StartTextField" type="text" size="50" placeholder="Start here">
-        <h5 class="card-text">Destination</h5>
+        <h5 class="card-text label">Destination</h5>
         <input class="form-control" id="DestinationTextField" type="text" size="50" placeholder="Anywhere you want!">
-        <button type ="button" class="btn btn-dark" onclick="build_path()">Go somewhere</button>
-        <button type="button" class="btn btn-dark">Report Shortage</button>
+        <div class="btn-group"><button type ="button"  class="btn btn-success btn" onclick="build_path()">Directions</button></div>
+        <div class="btn-group"><button type="button" class="btn btn-danger btn" data-toggle="modal" data-target="#ReportOutage">Report Outage</button></div>
         </div>
     </div>
 </div>
 
-//MODEL FAB
-<div class="fab" data-toggle="modal" data-target="#myModal">+</div>
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="margin: 0 auto;background: rgba(35,35,59,0.3)" data-keyboard="false" data-backdrop="static" >
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="width: 800px">
-        <div class="modal-content" style="background: #bebed2; border: 5px antiquewhite solid">
-            <div class="modal-header" style="text-align: center">
-                <h1 style="color: #23233b;font-family: Karla;text-align: center">Report an Outage</h1>
-            </div>
-
-            <div class="modal-body" style="text-align: center;font-family: Karla;color: antiquewhite">
-                <div class = "row justify-content-around">
-                    <H5> Select a Train Station From the List Bellow</H5>
-                    <div ng-controller="reportController">
-                        <select ng-model="selectedStation">
-                            <option
-                                    ng-repeat="station in stations"
-                                    value="{{station}}">
-                                {{station}}
-                            </option>
-                        </select>
-                    </div>
-
-                    <p>Reporting an inaccessibility outage will update our database with this infomriton,routing your train route through a different pathway.</p>
-
-                </div>
-
-            </div>
+  <!-- Modal -->
+  <div class="modal fade" id="ReportOutage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">   
+        <div class="modal-header center">
+          <h3 class="modal-title" id="exampleModalLabel">Report an Outage</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
             <div class = "row justify-content-around">
-                <button type="button" class="btn btn-secondary" on-click="" data-dismiss="modal" style="background: antiquewhite; font-family: Karla;color: #23233b; width: 30%">Submit</button>
+                <H5> Train Station:</H5>
+                <div ng-controller="reportController">
+                    <select ng-model="selectedStation">
+                        <option
+                                ng-repeat="station in stations"
+                                value="{{station}}">
+                            {{station}}
+                        </option>
+                    </select>
+                </div>
             </div>
-            <br>
+            Reporting an inaccessibility outage will update our database with this information and reroute your train.
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" on-click="" >Report</button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-
+  
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 <script src="index.js"></script>
