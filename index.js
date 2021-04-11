@@ -1,6 +1,9 @@
 let map;
-let latitude;
-let longitude;
+let current_latitude;
+let current_longitude;
+let end_latitude;
+let end_longitude;
+let json_data;
 
 let autocomplete;
 const center = { lat: 41.8781, lng: -87.6298};
@@ -43,15 +46,21 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    latitude = position.coords.latitude;
-    longitude= position.coords.longitude;
-    console.log(latitude)
-    console.log(longitude)
+    current_latitude = position.coords.latitude;
+    current_longitude= position.coords.longitude;
+}
+function caclulateEndCoordinate(){
+
+    json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("DestinationTextField").value)
+    json_data= JSON.parse(json_data);
+    end_latitude=json_data.data[0].latitude;
+    end_longitude=json_data.data[0].longitude;
 }
 
+
 function calcRoute() {
-    var start = { lat: latitude, lng: longitude} ;
-    var end = document.getElementById('end').value;
+    var start = { lat: current_latitude, lng: current_longitude};
+    var end = { lat: end_latitude, lng: end_longitude};
     var request = {
         origin: start,
         destination: end,
