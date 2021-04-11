@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from urllib.request import urlopen
 from xml.etree.ElementTree import parse
