@@ -17,12 +17,12 @@ const defaultBounds = {
 
 function initMap() {
     getLocation();
-     directionsService = new google.maps.DirectionsService();
-     directionsRenderer = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 41.8781, lng: -87.6298},
         zoom: 12,
     });
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer();
     directionsRenderer.setMap(map);
 
     autocomplete = new google.maps.places.Autocomplete(document.getElementById("DestinationTextField"),{
@@ -92,7 +92,7 @@ function calcRouteWalk(point1_lat,point1_long,point2_lat,point2_long) {
     var request = {
         origin: start,
         destination: end,
-        travelMode: 'DRIVING'
+        travelMode: 'WALKING'
     };
     directionsService.route(request, function(result, status) {
         if (status == 'OK') {
@@ -119,8 +119,9 @@ function build_path(){
     let point1_long= result_json["start"][1];
     let point2_lat=  result_json["end"][0];
     let point2_long= result_json["end"][1];
-    calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long);
-
+    //calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long);
+    //calcRouteWalk(41.8858,-87.8316,point1_lat,point1_long);
+    calcRouteWalk(point2_lat,point1_long,end_latitude,end_longitude);
 }
 
 function restApiCall(){
