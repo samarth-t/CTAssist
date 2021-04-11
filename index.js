@@ -95,8 +95,8 @@ function showPosition(position) {
 
 function calculateEndCoordinate(){
     json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("DestinationTextField").value)
-    json_data= JSON.parse(json_data);
     console.log(json_data)
+    json_data= JSON.parse(json_data);
     end_latitude=json_data.data[0].latitude;
     console.log("End", end_latitude)
     end_longitude=json_data.data[0].longitude;
@@ -104,6 +104,7 @@ function calculateEndCoordinate(){
 
 function calculateStartCoordinate(){
     json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("StartTextField").value)
+    console.log(json_data)
     json_data= JSON.parse(json_data);
     console.log(json_data)
     current_latitude=json_data.data[0].latitude;
@@ -175,3 +176,8 @@ function restApiCall(){
 
 }
 
+
+function report(){
+
+
+}
