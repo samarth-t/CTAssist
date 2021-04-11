@@ -1,4 +1,4 @@
-# CTAssist
+# CTAssist - created for HackIllinois 2021
 
 ## Wheelchair-accessible navigation just got smarter! With real-time elevator closures, live user inputs, and station accessibility infrastructure accounted for, enjoy your hassle-free journey on CTA.
 
