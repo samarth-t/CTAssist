@@ -81,3 +81,12 @@ function httpGet(theUrl)
     xmlHttp.send( null );
     return xmlHttp.responseText;
 }
+
+
+function build_path(currentLocationLat,currentLocationLong,destinationLocationLat,destinationLocationLong){
+    result_json=JSON.parse(httpGet("http://3.130.138.187:8080/CTAssist?currentLocationLat="+currentLocationLat+"&currentLocationLong="+currentLocationLong+"&destinationLocationLat="+destinationLocationLat+"&destinationLocationLong="+destinationLocationLong));
+    let point1_lat=  result_json["start"][0];
+    let point1_long= result_json["start"][1];
+    let point2_lat=  result_json["end"][0];
+    let point2_long= result_json["end"][1];
+}
