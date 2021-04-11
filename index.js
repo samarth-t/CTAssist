@@ -22,8 +22,27 @@ function initMap() {
         zoom: 12,
     });
     directionsService = new google.maps.DirectionsService();
-    directionsRenderer = new google.maps.DirectionsRenderer();
-    directionsRenderer.setMap(map);
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        map: map,
+        preserveViewport: false,
+        polylineOptions: {
+            strokeColor: 'purple'
+        }
+    });
+    directionsRenderer2 = new google.maps.DirectionsRenderer({
+        map: map,
+        preserveViewport: false,
+        polylineOptions: {
+            strokeColor: 'blue'
+        }
+    });
+    directionsRenderer3 = new google.maps.DirectionsRenderer({
+        map: map,
+        preserveViewport: false,
+        polylineOptions: {
+            strokeColor: 'blue'
+        }
+    });
 
     autocomplete = new google.maps.places.Autocomplete(document.getElementById("DestinationTextField"),{
         bounds: defaultBounds,
@@ -43,17 +62,14 @@ function initMap() {
         types: ["establishment"]
     });
 
-
-
     var controlDiv = document.getElementById('info-card');
     map.controls[google.maps.ControlPosition.RIGHT].push(controlDiv);
-
 };
 
 var x = document.getElementById("demo");
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(calcualateStartCoordinate);
+        navigator.geolocation.getCurrentPosition(calculateStartCoordinate);
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -64,8 +80,7 @@ function showPosition(position) {
     current_longitude= position.coords.longitude;
 }
 
-function caclulateEndCoordinate(){
-
+function calculateEndCoordinate(){
     json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("DestinationTextField").value)
     json_data= JSON.parse(json_data);
     console.log(json_data)
@@ -74,7 +89,7 @@ function caclulateEndCoordinate(){
     end_longitude=json_data.data[0].longitude;
 }
 
-function calcualateStartCoordinate(){
+function calculateStartCoordinate(){
     json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("StartTextField").value)
     json_data= JSON.parse(json_data);
     console.log(json_data)
@@ -84,7 +99,7 @@ function calcualateStartCoordinate(){
 }
 
 
-function calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long) {
+function renderRouteTrain(point1_lat,point1_long,point2_lat,point2_long) {
     console.log(point1_long)
     console.log(point1_lat)
     console.log(point2_long)
@@ -103,11 +118,7 @@ function calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long) {
     });
 }
 
-function calcRouteWalk(point1_lat,point1_long,point2_lat,point2_long) {
-    console.log(point1_long)
-    console.log(point1_lat)
-    console.log(point2_long)
-    console.log(point2_lat)
+function renderRouteWalk(point1_lat,point1_long,point2_lat,point2_long,renderer) {
     var start = new google.maps.LatLng( point1_lat, point1_long)
     var end = new google.maps.LatLng( point2_lat, point2_long)
     var request = {
@@ -117,14 +128,13 @@ function calcRouteWalk(point1_lat,point1_long,point2_lat,point2_long) {
     };
     directionsService.route(request, function(result, status) {
         if (status == 'OK') {
-            directionsRenderer.setDirections(result);
+            renderer.setDirections(result);
         }
     });
 }
 
 
-function httpGet(theUrl)
-{
+function httpGet(theUrl) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
     xmlHttp.send( null );
@@ -134,18 +144,20 @@ function httpGet(theUrl)
 
 function build_path(){
     let result_json;
-    caclulateEndCoordinate();
-    calcualateStartCoordinate();
+    calculateStartCoordinate();
+    calculateEndCoordinate();
     result_json = restApiCall();
     let point1_lat=  result_json["start"][0];
     let point1_long= result_json["start"][1];
     let point2_lat=  result_json["end"][0];
     let point2_long= result_json["end"][1];
-    //calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long);
-    //calcRouteWalk(41.8858,-87.8316,point1_lat,point1_long);
-    calcRouteWalk(point2_lat,point1_long,end_latitude,end_longitude);
+    renderRouteTrain(point1_lat,point1_long,point2_lat,point2_long);
+    renderRouteWalk(current_latitude,current_longitude,point1_lat,point1_long,directionsRenderer2);
+    renderRouteWalk(point2_lat,point2_long,end_latitude,end_longitude,directionsRenderer3);
 }
 
 function restApiCall(){
-    return result_json = JSON.parse(httpGet("https://thingproxy.freeboard.io/fetch/http://3.130.138.187:8080/CTAssist?currentLocationLat=41.8858&currentLocationLong=-87.8316&destinationLocationLat="+end_latitude+"&destinationLocationLong="+end_longitude));
+    //return result_json = JSON.parse(httpGet("https://thingproxy.freeboard.io/fetch/http://3.130.138.187:8080/CTAssist?currentLocationLat=41.8858&currentLocationLong=-87.8316&destinationLocationLat="+end_latitude+"&destinationLocationLong="+end_longitude));
+    return result_json = JSON.parse(httpGet("https://thingproxy.freeboard.io/fetch/http://3.130.138.187:8080/CTAssist?currentLocationLat="+current_latitude+"&currentLocationLong="+current_longitude+"&destinationLocationLat="+end_latitude+"&destinationLocationLong="+end_longitude));
+
 }
