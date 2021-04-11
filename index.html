@@ -7,7 +7,13 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="index.js"></script>
+
 </head>
+<httpProtocol>
+    <customHeaders>
+        <add name="Access-Control-Allow-Origin" value="*" />
+    </customHeaders>
+</httpProtocol>
 <body>
 <div id="map"></div>
 
@@ -16,7 +22,7 @@
     <div class="card-body">
         <h4 class="card-title">Destination</h4>
         <input class="col-sm" id="DestinationTextField" type="text" size="50" placeholder="Anything you want!">
-        <a href="#" class="btn btn-primary" onclick="caclulateEndCoordinate()">Go somewhere</a>
+        <a href="#" class="btn btn-primary" onclick="build_path()">Go somewhere</a>
         <button href="#" class="btn btn-primary">Report Shortage</button>
     </div>
 </div>

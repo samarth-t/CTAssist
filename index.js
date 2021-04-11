@@ -17,10 +17,13 @@ const defaultBounds = {
 
 function initMap() {
     getLocation();
+     directionsService = new google.maps.DirectionsService();
+     directionsRenderer = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 41.8781, lng: -87.6298},
         zoom: 12,
     });
+    directionsRenderer.setMap(map);
 
     autocomplete = new google.maps.places.Autocomplete(document.getElementById("DestinationTextField"),{
         bounds: defaultBounds,
@@ -53,14 +56,39 @@ function caclulateEndCoordinate(){
 
     json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("DestinationTextField").value)
     json_data= JSON.parse(json_data);
+    console.log(json_data)
     end_latitude=json_data.data[0].latitude;
+    console.log(end_latitude)
     end_longitude=json_data.data[0].longitude;
 }
 
 
-function calcRoute() {
-    var start = { lat: current_latitude, lng: current_longitude};
-    var end = { lat: end_latitude, lng: end_longitude};
+function calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long) {
+    console.log(point1_long)
+    console.log(point1_lat)
+    console.log(point2_long)
+    console.log(point2_lat)
+    var start = new google.maps.LatLng( point1_lat, point1_long)
+    var end = new google.maps.LatLng( point2_lat, point2_long)
+    var request = {
+        origin: start,
+        destination: end,
+        travelMode: 'TRANSIT'
+    };
+    directionsService.route(request, function(result, status) {
+        if (status == 'OK') {
+            directionsRenderer.setDirections(result);
+        }
+    });
+}
+
+function calcRouteWalk(point1_lat,point1_long,point2_lat,point2_long) {
+    console.log(point1_long)
+    console.log(point1_lat)
+    console.log(point2_long)
+    console.log(point2_lat)
+    var start = new google.maps.LatLng( point1_lat, point1_long)
+    var end = new google.maps.LatLng( point2_lat, point2_long)
     var request = {
         origin: start,
         destination: end,
@@ -83,10 +111,18 @@ function httpGet(theUrl)
 }
 
 
-function build_path(currentLocationLat,currentLocationLong,destinationLocationLat,destinationLocationLong){
-    result_json=JSON.parse(httpGet("http://3.130.138.187:8080/CTAssist?currentLocationLat="+currentLocationLat+"&currentLocationLong="+currentLocationLong+"&destinationLocationLat="+destinationLocationLat+"&destinationLocationLong="+destinationLocationLong));
+function build_path(){
+    let result_json;
+    caclulateEndCoordinate();
+    result_json = restApiCall();
     let point1_lat=  result_json["start"][0];
     let point1_long= result_json["start"][1];
     let point2_lat=  result_json["end"][0];
     let point2_long= result_json["end"][1];
+    calcRouteTrain(point1_lat,point1_long,point2_lat,point2_long);
+
+}
+
+function restApiCall(){
+    return result_json = JSON.parse(httpGet("https://thingproxy.freeboard.io/fetch/http://3.130.138.187:8080/CTAssist?currentLocationLat=41.8858&currentLocationLong=-87.8316&destinationLocationLat="+end_latitude+"&destinationLocationLong="+end_longitude));
 }
