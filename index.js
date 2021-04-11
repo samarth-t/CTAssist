@@ -2,7 +2,6 @@ let map;
 let latitude;
 let longitude;
 
-
 let autocomplete;
 const center = { lat: 41.8781, lng: -87.6298};
 const defaultBounds = {
@@ -19,7 +18,6 @@ function initMap() {
         center: { lat: 41.8781, lng: -87.6298},
         zoom: 12,
     });
-    directionsRenderer.setMap(map);
 
     autocomplete = new google.maps.places.Autocomplete(document.getElementById("DestinationTextField"),{
         bounds: defaultBounds,
@@ -31,9 +29,25 @@ function initMap() {
     });
 
     var controlDiv = document.getElementById('info-card');
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
+    map.controls[google.maps.ControlPosition.RIGHT].push(controlDiv);
+
 };
 
+var x = document.getElementById("demo");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    latitude = position.coords.latitude;
+    longitude= position.coords.longitude;
+    console.log(latitude)
+    console.log(longitude)
+}
 
 function calcRoute() {
     var start = { lat: latitude, lng: longitude} ;
@@ -51,18 +65,10 @@ function calcRoute() {
 }
 
 
-var x = document.getElementById("demo");
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-function showPosition(position) {
-    latitude = position.coords.latitude;
-    longitude= position.coords.longitude;
-    console.log(latitude)
-    console.log(longitude)
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
 }
