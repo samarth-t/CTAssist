@@ -34,6 +34,17 @@ function initMap() {
         types: ["establishment"]
     });
 
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById("StartTextField"),{
+        bounds: defaultBounds,
+        componentRestrictions: { country: "us" },
+        fields: ["address_components", "geometry", "icon", "name"],
+        origin: center,
+        strictBounds: false,
+        types: ["establishment"]
+    });
+
+
+
     var controlDiv = document.getElementById('info-card');
     map.controls[google.maps.ControlPosition.RIGHT].push(controlDiv);
 
@@ -42,7 +53,7 @@ function initMap() {
 var x = document.getElementById("demo");
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(calcualateStartCoordinate);
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -52,14 +63,24 @@ function showPosition(position) {
     current_latitude = position.coords.latitude;
     current_longitude= position.coords.longitude;
 }
+
 function caclulateEndCoordinate(){
 
     json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("DestinationTextField").value)
     json_data= JSON.parse(json_data);
     console.log(json_data)
     end_latitude=json_data.data[0].latitude;
-    console.log(end_latitude)
+    console.log("End", end_latitude)
     end_longitude=json_data.data[0].longitude;
+}
+
+function calcualateStartCoordinate(){
+    json_data = httpGet("http://api.positionstack.com/v1/forward?access_key=d501510d46cc578596539c210f600de8&query="+ document.getElementById("StartTextField").value)
+    json_data= JSON.parse(json_data);
+    console.log(json_data)
+    current_latitude=json_data.data[0].latitude;
+    console.log("Start", current_latitude)
+    current_longitude=json_data.data[0].longitude;
 }
 
 
@@ -114,6 +135,7 @@ function httpGet(theUrl)
 function build_path(){
     let result_json;
     caclulateEndCoordinate();
+    calcualateStartCoordinate();
     result_json = restApiCall();
     let point1_lat=  result_json["start"][0];
     let point1_long= result_json["start"][1];
