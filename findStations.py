@@ -13,6 +13,12 @@ from xml.etree.ElementTree import parse
 import requests
 import csv
 import json
+import math
+
+cur_lat = 41.8858
+cur_long = -87.6316
+dest_lat = 41.8696
+dest_long = -87.6496
 
 # Returns a list of nearest stations from the Google API
 def findNearest(lat,long):
@@ -51,15 +57,11 @@ def findLine(loc):
 # Returns tuples of potential start and end locations
 def generatePaths(start_locs, end_locs):
     paths = []
-    path_count = 0
     for start_loc in start_locs:
         for end_loc in end_locs:
             common_lines = set(findLine(start_loc)) & set(findLine(end_loc))
             if len(common_lines) != 0 and start_loc != end_loc:
                 paths.append((start_loc, end_loc))
-                path_count = path_count + 1
-                if path_count == 3:
-                    return paths
     return paths
 
 # Converts a station name to its coordinates from CTA database
@@ -72,22 +74,57 @@ def returnCoords(station_name):
 
     return (91,181)
 
+# Given station path list return list trsnlated to coords
+def pathToCoords(paths):
+    coord_paths = []
+    for path in paths:
+        path_coord = (returnCoords(path[0]), returnCoords(path[1]))
+        coord_paths.append(path_coord)
+    return coord_paths
+
+#Returns shortest pair of coordinates walking dist given list of paths
+def findShortestCoord(paths):
+    coord_paths = pathToCoords(paths)
+
+    shortest_len = 99999999
+    shortest_pair = ((0,0),(0,0))
+    for coords in coord_paths:
+        walk1 = calculateDist(cur_lat, cur_long, coords[0][0], coords[0][1])
+        walk2 = calculateDist(coords[1][0], coords[1][1], dest_lat, dest_long)
+        temp_len = walk1 + walk2
+        if temp_len < shortest_len:
+            shortest_len = temp_len
+            shortest_pair = coords
+    return shortest_pair
+
+# Calculates distance between two points given latitudes and longitudes
+def calculateDist(lat1,long1,lat2,long2):
+    radius = 6371
+    radlat1 = lat1 * math.pi/180
+    radlat2 = lat2 * math.pi/180
+    latdiff = (lat2-lat1) * math.pi/180;
+    longdiff = (long2-long1) * math.pi/180;
+
+    a = math.sin(latdiff/2) * math.sin(latdiff/2) + math.cos(radlat1) * math.cos(radlat2) * math.sin(longdiff/2) * math.sin(longdiff/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    return (radius * c)
+
 # testing code
-start_lat = 41.8858
-start_long = -87.6316
-start_nearest = findNearest(start_lat,start_long)
+start_nearest = findNearest(cur_lat,cur_long)
 print(start_nearest)
 
-dest_lat = 41.8696
-dest_long = -87.6496
 dest_nearest = findNearest(dest_lat,dest_long)
 print(dest_nearest)
 
 paths = generatePaths(start_nearest, dest_nearest)
 print(paths)
 
-start_coords = returnCoords(paths[0][0])
-end_coords = returnCoords(paths[0][1])
+print(pathToCoords(paths))
+
+shortest_coords = findShortestCoord(paths)
+
+start_coords = shortest_coords[0]
+end_coords = shortest_coords[1]
 output = {'start':start_coords, 'end':end_coords}
 json_str = json.dumps(output)
 print(json_str)
