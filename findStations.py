@@ -111,15 +111,15 @@ def calculateDist(lat1,long1,lat2,long2):
 
 # testing code
 start_nearest = findNearest(cur_lat,cur_long)
-print(start_nearest)
+#print(start_nearest)
 
 dest_nearest = findNearest(dest_lat,dest_long)
-print(dest_nearest)
+#print(dest_nearest)
 
 paths = generatePaths(start_nearest, dest_nearest)
-print(paths)
+#print(paths)
 
-print(pathToCoords(paths))
+#print(pathToCoords(paths))
 
 shortest_coords = findShortestCoord(paths)
 
