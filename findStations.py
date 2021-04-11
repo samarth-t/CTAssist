@@ -11,6 +11,7 @@ lines = {'brown' : brown, 'blue' : blue, 'green' : green, 'orange' : orange, 'pi
 from urllib.request import urlopen
 from xml.etree.ElementTree import parse
 import requests
+import csv
 
 # Returns a list of nearest stations from the Google API
 def findNearest(lat,long):
@@ -62,6 +63,15 @@ def generatePaths(start_locs, end_locs):
                     return paths
     return paths
 
+def returnCoords(station_name):
+    file = open("transit_info/stops.csv")
+    reader = csv.reader(file)
+    for row in reader:
+        if(row[2] == station_name):
+            return (row[4],row[5])
+
+    return (91,181)
+
 # testing code
 start_lat = 41.8858
 start_long = -87.6316
@@ -73,4 +83,7 @@ dest_long = -87.6496
 dest_nearest = findNearest(dest_lat,dest_long)
 print(dest_nearest)
 
-print(generatePaths(start_nearest, dest_nearest))
+paths = generatePaths(start_nearest, dest_nearest)
+print(paths)
+
+print(returnCoords(paths[0][0]))
