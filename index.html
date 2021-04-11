@@ -6,19 +6,19 @@
     <link rel="stylesheet" href="index.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="index.js"></script>
-
 </head>
 <httpProtocol>
     <customHeaders>
         <add name="Access-Control-Allow-Origin" value="*" />
     </customHeaders>
 </httpProtocol>
-<body>
+<body ng-app="myApp">
 <div id="map"></div>
 
 <div class="card" style="width: 18rem;" id="info-card" >
-    
+
+
+
     <img class="card-img-top" src="Logo.png" alt="Card image cap">
     <div class="card-body">
         <div class="form-group">
@@ -26,20 +26,57 @@
         <input class="form-control" id="StartTextField" type="text" size="50" placeholder="Start here">
         <h5 class="card-text">Destination</h5>
         <input class="form-control" id="DestinationTextField" type="text" size="50" placeholder="Anywhere you want!">
-        
         <button type ="button" class="btn btn-dark" onclick="build_path()">Go somewhere</button>
         <button type="button" class="btn btn-dark">Report Shortage</button>
+        </div>
     </div>
+</div>
 
+//MODEL FAB
+<div class="fab" data-toggle="modal" data-target="#myModal">+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="margin: 0 auto;background: rgba(35,35,59,0.3)" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="width: 800px">
+        <div class="modal-content" style="background: #bebed2; border: 5px antiquewhite solid">
+            <div class="modal-header" style="text-align: center">
+                <h1 style="color: #23233b;font-family: Karla;text-align: center">Report an Outage</h1>
+            </div>
+
+            <div class="modal-body" style="text-align: center;font-family: Karla;color: antiquewhite">
+                <div class = "row justify-content-around">
+                    <H5> Select a Train Station From the List Bellow</H5>
+                    <div ng-controller="reportController">
+                        <select ng-model="selectedStation">
+                            <option
+                                    ng-repeat="station in stations"
+                                    value="{{station}}">
+                                {{station}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <p>Reporting an inaccessibility outage will update our database with this infomriton,routing your train route through a different pathway.</p>
+
+                </div>
+
+            </div>
+            <div class = "row justify-content-around">
+                <button type="button" class="btn btn-secondary" on-click="" data-dismiss="modal" style="background: antiquewhite; font-family: Karla;color: #23233b; width: 30%">Submit</button>
+            </div>
+            <br>
+        </div>
+    </div>
 </div>
 
 
 
-
-
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="index.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&libraries=places&callback=initMap"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
 </body>
 </html>
