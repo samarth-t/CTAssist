@@ -19,8 +19,9 @@ function initMap() {
         center: { lat: 41.8781, lng: -87.6298},
         zoom: 12,
     });
+    directionsRenderer.setMap(map);
 
-    autocomplete = new google.maps.places.Autocomplete(document.getElementById("searchTextField"),{
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById("DestinationTextField"),{
         bounds: defaultBounds,
         componentRestrictions: { country: "us" },
         fields: ["address_components", "geometry", "icon", "name"],
@@ -29,20 +30,25 @@ function initMap() {
         types: ["establishment"]
     });
 
-    var controlDiv = document.getElementById('searchTextField');
+    var controlDiv = document.getElementById('info-card');
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
 };
-function autoComplete(){
-    autocomplete = new google.maps.places.Autocomplete(document.getElementById("searchTextField"),{
-        bounds: defaultBounds,
-        componentRestrictions: { country: "us" },
-        fields: ["address_components", "geometry", "icon", "name"],
-        origin: center,
-        strictBounds: false,
-        types: ["establishment"]
+
+
+function calcRoute() {
+    var start = { lat: latitude, lng: longitude} ;
+    var end = document.getElementById('end').value;
+    var request = {
+        origin: start,
+        destination: end,
+        travelMode: 'DRIVING'
+    };
+    directionsService.route(request, function(result, status) {
+        if (status == 'OK') {
+            directionsRenderer.setDirections(result);
+        }
     });
 }
-
 
 
 var x = document.getElementById("demo");
