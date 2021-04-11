@@ -1,3 +1,4 @@
+
 let map;
 let current_latitude;
 let current_longitude;
@@ -19,7 +20,7 @@ function initMap() {
     getLocation();
     map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 41.8781, lng: -87.6298},
-        zoom: 12,
+        zoom: 15,
     });
     directionsService = new google.maps.DirectionsService();
     directionsRenderer = new google.maps.DirectionsRenderer();
@@ -127,3 +128,4 @@ function build_path(){
 function restApiCall(){
     return result_json = JSON.parse(httpGet("https://thingproxy.freeboard.io/fetch/http://3.130.138.187:8080/CTAssist?currentLocationLat=41.8858&currentLocationLong=-87.8316&destinationLocationLat="+end_latitude+"&destinationLocationLong="+end_longitude));
 }
+

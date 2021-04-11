@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="UTF-8">
     <title>Maps</title>
@@ -9,12 +9,7 @@
     <script src="index.js"></script>
 
 </head>
-<httpProtocol>
-    <customHeaders>
-        <add name="Access-Control-Allow-Origin" value="*" />
-    </customHeaders>
-</httpProtocol>
-<body>
+<body ng-controller="index">
 <div id="map"></div>
 
 <div class="card" style="width: 18rem;" id="info-card" >
@@ -27,9 +22,47 @@
     </div>
 </div>
 
+<div class="fab" data-toggle="modal" data-target="#myModal">+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="margin: 0 auto;background: rgba(35,35,59,0.3)" data-keyboard="false" data-backdrop="static" >
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="width: 800px">
+        <div class="modal-content" style="background: #bebed2; border: 5px antiquewhite solid">
+            <div class="modal-header" style="text-align: center">
+
+                <div>
+                    <h1 style="color: #23233b;font-family: Karla;text-align: center">Report An Outage</h1>
+
+                    <script>
+
+                        var app= angular.module('app',[]);
+                        app.controller('index',['$scope', function($scope) {
+                            $scope.selectedStation;
+                            $scope.stations = ["Kimball", "Kedzie", "Francisco", "Rockwell", "Western", "Damen", "Montrose", "Irving Park", "Addison", "Paulina", "Southport", "Belmont", "Wellington", "Diversey", "Fullerton", "Armitage", "Sedgwick", "Chicago", "Merchandise Mart", "Washington/Wells", "Quincy", "Harold Washington Library-State/Van Buren", "Washington/Wabash", "Clark/Lake", "O’Hare", "Rosemont", "Cumberland", "Harlem (O'Hare branch)", "Jefferson Park", "Addison", "Logan Square", "Western (O’Hare branch)", "Clark/Lake", "Jackson", "UIC-Halsted", "Illinois Medical District", "Kedzie-Homan", "Forest Park", "Ashland/63rd", "Halsted", "Cottage Grove", "King Drive", "Garfield", "51st", "47th", "43rd", "Indiana", "35th-Bronzeville-IIT", "Cermak-McCormick Place", "Roosevelt", "Washington/Wabash", "Clark/Lake", "Clinton", "Morgan", "Ashland", "California", "Kedzie", "Conservatory-Central Park Drive", "Pulaski", "Cicero", "Laramie", "Central", "Harlem/Lake (via Marion entrance)", "Midway", "Pulaski", "Kedzie", "Western", "35/Archer", "Ashland", "Halsted", "Roosevelt; also Harold Washington Library-State/Van Buren", "Quincy", "Washington/Wells", "Clark/Lake", "Washington/Wabash", "54th/Cermak", "Cicero", "Kostner", "Pulaski", "Central Park", "Kedzie", "California", "Western", "Damen", "18th", "Polk", "Ashland", "Morgan", "Clinton", "Clark/Lake", "Washington/Wabash", "Harold Washington Library-State/Van Buren", "Quincy", "Washington/Wells", "Linden", "Davis", "Howard", "Wilson", "Belmont", "Wellington", "Diversey", "Fullerton", "Armitage", "Sedgwick", "Chicago", "Merchandise Mart", "Clark/Lake", "Washington/Wabash", "Harold Washington Library-State/Van Buren", "Quincy", "Washington/Wells", "Howard", "Loyola", "Granville", "Wilson", "Addison", "Belmont", "Fullerton", "Clark/Division", "Chicago", "Grand", "Lake", "Jackson", "Roosevelt", "Cermak-Chinatown", "Sox-35th", "47th", "Garfield", "63rd", "69th", "79th", "87th", "95th/Dan Ryan"]
+
+                        }]);
+
+                    </script>
+
+                    <label>Color grouped by shade:
+                        <select ng-model="selectedStation">
+                            <option ng-controller="index" ng-repeat="station in stations"> {{station}} <option>
+                        </select>
+                    </label><br/>
 
 
+                    <button onclick="daa"> submit </button>
+                    <div class="modal-body" style="text-align: center;font-family: Karla;color: antiquewhite">
 
+                        <h></h>
+
+                        <p>Reporting an Outage will notify our database and will reroute your routes excluding this outage for the upcoming future.</p>
+                    </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByylQ2Cq0ZqzbjLkIjeeFFJ2O8lWCsYOw&libraries=places&callback=initMap"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
