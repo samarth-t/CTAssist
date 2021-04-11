@@ -91,7 +91,7 @@ def generatePaths(start_locs, end_locs):
 
 # Converts a station name to its coordinates from CTA database
 def returnCoords(station_name):
-    file = open("transit_info/stops.csv")
+    file = open("stops.csv")
     reader = csv.reader(file)
     for row in reader:
         if(row[2] == station_name):
